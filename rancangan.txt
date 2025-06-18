@@ -1,0 +1,76 @@
+Aplikasi presensi dakwah
+
+Admin (TU)
+
+- Managament data master
+  1. crud siswa
+  2. crud kelas
+  3. crud guru
+  4. crud orang tua
+  5. crud matapelajaran
+
+- Management Account Pengguna
+	1. CRUD akun guru, orang tua, dan admin(TU)
+
+- Rekap atau laporan kehadiran siswa berdasarkan periode (harian, mingguan, bulanan)
+- Download laporan kehadiran siswa dalam format pdf atau excel
+- Pengaturan sistem, mengatur tahun ajaran, smester, hari aktif sekolah
+
+Guru
+
+- Melakukan presensi perkelas dan tanggal
+- Menampilkan daftar kehadiran siswa pertanggal, perkelas
+- filter berdasarkan mapel/kelas
+- Menambahkan catatan absensi (Izin => karena ada surat)
+- Menampilkan rekap absensi harian / mingguan per kelas
+
+
+
+Orang Tua
+
+- Lihat riwayat absensi anak (harian / bulanan)
+- Notifikasi Kehadiran telegram | dapatkan notifikasi jika anak tidak hadir
+
+
+
+
+Database
+
+=============
+
+tbl_users
+-id_users
+-username
+-password
+
+
+
+
+siswa
+-id_siswa
+-nama_siswa
+-email
+-no_telepon
+
+kelas
+-id_kelas
+-nama_kelas
+
+
+guru
+-id_guru
+-nama_guru
+-email
+-no_telepon
+
+orang_tua
+-id_orang_tua
+-nama_orang_tua
+-email
+-no_telepon
+
+Matapelajaran
+-id_mapel
+-nama
+
+
