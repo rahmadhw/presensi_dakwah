@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\TelegramHelper;
 use App\Http\Controllers\adminController;
 use App\Http\Controllers\adminReportPresensi;
 use App\Http\Controllers\ProfileController;
@@ -15,7 +16,11 @@ use App\Http\Controllers\createGuruController;
 use App\Http\Controllers\createOrangTuaController;
 use App\Http\Controllers\guruAkunController;
 use App\Http\Controllers\guruPresensiController;
+use App\Http\Controllers\orangTuaAkunController;
+use App\Http\Controllers\orangTuaRiwayatPresensi;
 use App\Http\Controllers\tahunAjaranAktif;
+use App\Models\Siswa;
+use Illuminate\Support\Facades\Http;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +35,50 @@ use App\Http\Controllers\tahunAjaranAktif;
 
 Route::get('/', function () {
     return view('auth.login');
+});
+
+
+Route::get('/test-telegram', function () {
+    $chatId = '1218904647';
+    $pesan = "✅ Test pesan Telegram berhasil dari Laravel.";
+
+    TelegramHelper::sendMessage($chatId, $pesan);
+});
+
+
+Route::get('/sync-telegram-orangtua', function () {
+    $token = config('services.telegram.bot_token');
+    $response = Http::get("https://api.telegram.org/bot{$token}/getUpdates");
+
+    $updates = $response->json()['result'];
+
+    foreach ($updates as $update) {
+        if (!isset($update['message']['text'])) continue;
+
+        $message = $update['message'];
+        $chatId = $message['chat']['id'];
+        $text = strtolower($message['text']);
+
+        // Misal pesan: "saya orang tua dari budi"
+        preg_match('/orang tua dari (.+)/', $text, $matches);
+
+        if (isset($matches[1])) {
+            $namaSiswa = trim($matches[1]);
+
+            $siswa = Siswa::where('nama', 'like', "%{$namaSiswa}%")->first();
+
+            if ($siswa && $siswa->orangTua) {
+                $ortu = $siswa->orangTua;
+                $ortu->telegram_chat_id = $chatId;
+                $ortu->save();
+                logger("✅ Chat ID disimpan untuk orang tua siswa: {$siswa->nama}");
+            } else {
+                logger("⚠️ Tidak ditemukan siswa dengan nama: {$namaSiswa}");
+            }
+        }
+    }
+
+    return '✅ Sinkronisasi chat ID selesai.';
 });
 
 
@@ -136,6 +185,18 @@ Route::middleware(['auth', 'role:guru'])->prefix('guru')->name('guru.')->group(f
         Route::get('/riwayat-presensi', 'riwayatPresensi')->name('riwayatPresensi');
         Route::get('/laporan', 'laporan')->name('Laporan');
         Route::post('/store', 'store')->name('store');
+    });
+});
+
+
+Route::middleware(['auth', 'role:orang_tua'])->prefix('orang-tua')->name('orangTua.')->group(function() {
+    Route::controller(orangTuaAkunController::class)->prefix('dashboard')->name('dashboard.')->group(function() {
+        Route::get('/', 'index')->name('index');
+    });
+
+    Route::controller(orangTuaRiwayatPresensi::class)->prefix('riwayat-presensi')->name('riwayatPresensi.')->group(function() {
+        Route::get('/', 'index')->name('index');
+        Route::get('/riwayat', 'riwayat')->name('Riwayat');
     });
 });
 

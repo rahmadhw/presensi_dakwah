@@ -20,4 +20,6 @@ class Siswa extends Model
     {
         return $this->belongsTo(kelas::class);
     }
+
+    
 }

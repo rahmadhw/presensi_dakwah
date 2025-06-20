@@ -135,6 +135,23 @@
 
         @endhasrole
 
+        @hasrole('orang_tua')
+
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('orangTua.dashboard.index') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('orangTua.riwayatPresensi.index') }}">
+                <i class="fas fa-fw fa-chart-area"></i>
+                <span>riwayat presensi</span></a>
+            </li>
+
+        @endhasrole
+
         </ul>
 
             

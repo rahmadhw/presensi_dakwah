@@ -36,6 +36,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->route('admin.dashboard.index');
         } elseif ($user && $user->hasRole('guru')) {
             return redirect()->route('guru.dashboard.index');
+        } elseif ($user && $user->hasRole('orang_tua')) {
+            return redirect()->route('orangTua.dashboard.index');
         } else {
             Auth::logout();
             return redirect()->route('login')->with('status', 'You are not authorized to access this page.');
