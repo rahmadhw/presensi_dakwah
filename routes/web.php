@@ -91,6 +91,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 
     Route::controller(kelasController::class)->prefix('kelas')->name('kelas.')->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/edit/{kelas}', 'edit')->name('edit');
+        Route::post('/update/{kelas}', 'update')->name('update');
+        Route::get('/hapus/{kelas}', 'hapus')->name('hapus');
     });
 
     Route::controller(tahunAjaranController::class)->prefix('tahun-ajaran')->name('tahunAjaran.')->group(function() {
