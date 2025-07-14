@@ -18,6 +18,7 @@ use App\Http\Controllers\guruAkunController;
 use App\Http\Controllers\guruPresensiController;
 use App\Http\Controllers\orangTuaAkunController;
 use App\Http\Controllers\orangTuaRiwayatPresensi;
+use App\Http\Controllers\PengajarGuruController;
 use App\Http\Controllers\tahunAjaranAktif;
 use App\Models\Siswa;
 use Illuminate\Support\Facades\Http;
@@ -93,6 +94,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');
         Route::get('/edit/{kelas}', 'edit')->name('edit');
+        Route::get('/detail/{kelas}', 'detail')->name('detail');
         Route::post('/update/{kelas}', 'update')->name('update');
         Route::get('/hapus/{kelas}', 'hapus')->name('hapus');
     });
@@ -172,6 +174,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::get('/', 'index')->name('index');
         Route::get('/aktif/{tahunAjaran}', 'aktif')->name('aktif');
         Route::get('/nonaktif/{tahunAjaran}', 'nonaktif')->name('nonaktif');
+    });
+
+    Route::controller(PengajarGuruController::class)->prefix('jadwal-pengajaran')->name('pengajaranGuru.')->group(function(){
+        Route::get('/', 'index')->name('index');
+        Route::post('/store', 'store')->name('store');
+        Route::get('/edit/{guruMatkulKelas}', 'edit')->name('edit');
+        Route::post('/update/{guruMatkulKelas}', 'update')->name('update');
+        Route::get('/hapus/{guruMatkulKelas}', 'hapus')->name('hapus');
     });
 
 });

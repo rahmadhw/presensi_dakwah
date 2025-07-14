@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('name');
             $table->string('email');
-            $table->foreignId('mapel_id')->references('id')->on('mata_pelajarans');
             $table->timestamps();
         });
     }
@@ -29,3 +28,4 @@ return new class extends Migration
         Schema::dropIfExists('gurus');
     }
 };
+

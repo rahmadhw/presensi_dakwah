@@ -10,4 +10,9 @@ class tahunAjaran extends Model
     use HasFactory;
 
     protected $fillable = ['tahun_ajaran', 'status'];
+
+    public function subkelas()
+    {
+        return $this->hasMany(tahunAjaran::class);
+    }
 }

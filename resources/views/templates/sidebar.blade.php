@@ -45,6 +45,7 @@
                         <a class="collapse-item" href="{{route('admin.guru.index')}}">Data Guru</a>
                         <a class="collapse-item" href="{{route('admin.orangTua.index')}}">Data Orang Tua</a>
                         <a class="collapse-item" href="{{ route('admin.siswa.index') }}">Data Siswa</a>
+                        <a class="collapse-item" href="{{ route('admin.pengajaranGuru.index') }}">Jadwal Pengajaran</a>
                     </div>
                 </div>
             </li>

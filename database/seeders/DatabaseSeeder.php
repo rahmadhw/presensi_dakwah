@@ -9,6 +9,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use App\Models\Kelas;
+use App\Models\subKelas;
 
 class DatabaseSeeder extends Seeder
 {
@@ -50,7 +51,6 @@ class DatabaseSeeder extends Seeder
         $orangTua->assignRole($role_orang_tua);
         $guru->assignRole($role_guru);
 
-
         $data = [
 
             ['nama_kelas' => '7A'],
@@ -67,5 +67,7 @@ class DatabaseSeeder extends Seeder
 
 
         Kelas::insert($data);
+        
+        
     }
 }
