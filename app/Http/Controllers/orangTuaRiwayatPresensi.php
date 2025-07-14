@@ -13,21 +13,13 @@ class orangTuaRiwayatPresensi extends Controller
 {
     public function index(Request $request)
     {
-        $kelas = Kelas::all();
-        $selectedKelas = $request->kelas_id;
-        $tanggal = $request->tanggal ?? now()->toDateString();
-        $data = [];
+       $absensi = Absensi::with('siswa')
+            ->whereHas('siswa', function ($query) {
+                $query->where('orang_tua_id', Auth::user()->id);
+            })
+            ->get();
 
-        if ($selectedKelas) {
-            $data = Absensi::with(['siswa', 'mapel'])
-                ->where('kelas_id', $selectedKelas)
-                ->where('tanggal', $tanggal)
-                ->orderBy('siswa_id')
-                ->orderBy('mapel_id')
-                ->get();
-        }
-
-        $data = collect($data);
+        dd($absensi);
 
         return view('orang_tua.riwayat_presensi.index', compact('kelas', 'selectedKelas', 'tanggal', 'data'));
     }

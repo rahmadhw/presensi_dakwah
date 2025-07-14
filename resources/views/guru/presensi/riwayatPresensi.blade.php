@@ -4,24 +4,6 @@
 <div class="container">
     <h4>Riwayat Kehadiran Siswa</h4>
 
-    <form action="{{ route('guru.presensi.riwayatPresensi') }}" method="GET" class="mb-4">
-        <div class="row">
-            <div class="col-md-4">
-                <select name="kelas_id" class="form-control" required>
-                    <option value="">-- Pilih Kelas --</option>
-                    @foreach($kelas as $k)
-                        <option value="{{ $k->id }}" {{ $selectedKelas == $k->id ? 'selected' : '' }}>{{ $k->nama_kelas }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-3">
-                <input type="date" name="tanggal" class="form-control" value="{{ $tanggal }}">
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-primary">Tampilkan</button>
-            </div>
-        </div>
-    </form>
     @php
         $grouped = collect($data)->groupBy('siswa_id');
     @endphp

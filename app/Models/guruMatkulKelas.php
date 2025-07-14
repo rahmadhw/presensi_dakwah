@@ -18,7 +18,7 @@ class guruMatkulKelas extends Model
 
     public function mapel()
     {
-        return $this->belongsTo(mataPelajaran::class);
+        return $this->belongsTo(mataPelajaran::class, 'mapel_id');
     }
 
     public function guru()

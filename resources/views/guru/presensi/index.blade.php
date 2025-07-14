@@ -3,6 +3,18 @@
 @section('content')
     <div class="container">
     <h4>Form Kehadiran Siswa</h4>
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered">
+                @foreach ($data as $item)
+                    <tr>
+                        <th width="15%">Nama Guru</th>
+                        <td>{{ $item->guru->name }}</td>
+                    </tr>
+                @endforeach
+            </table>
+        </div>
+    </div>
     @if(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
@@ -13,8 +25,7 @@
 
     <form action="{{route('guru.presensi.store')}}" method="POST">
         @csrf
-        <input type="hidden" name="kelas_id" value="{{ request('kelas_id') }}">
-        <input type="hidden" name="mapel_id" value="{{ request('mapel_id') }}">
+        
         <div class="form-group">
             <label for="tanggal">Tanggal:</label>
             <input type="date" name="tanggal" class="form-control" value="{{ $tanggal }}" required>
@@ -36,7 +47,11 @@
                 @php
                     $absen = $absensiTersimpan[$s->id] ?? null;
                 @endphp
+                    
                     <tr>
+                        <input type="hidden" name="kelas_id" value="{{$kelas_id}}">
+
+                    <input type="hidden" name="mapel_id" value="{{$mapel_id}}">
                         <td>{{ $s->nama }}</td>
                         <td><input type="radio" name="absensi[{{ $s->id }}]" value="hadir" {{ $absen && $absen->status === 'hadir' ? 'checked' : '' }} required></td>
                         <td><input type="radio" class="izin-radio" name="absensi[{{ $s->id }}]" value="izin" {{ $absen && $absen->status === 'izin' ? 'checked' : '' }}></td>

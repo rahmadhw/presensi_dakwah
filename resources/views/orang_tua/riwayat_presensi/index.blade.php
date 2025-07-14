@@ -4,7 +4,7 @@
 <div class="container">
     <h4>Riwayat Kehadiran Siswa</h4>
 
-    <form action="{{ route('orangTua.riwayatPresensi.index') }}" method="GET" class="mb-4">
+    {{-- <form action="{{ route('orangTua.riwayatPresensi.index') }}" method="GET" class="mb-4">
         <div class="row">
             <div class="col-md-4">
                 <select name="kelas_id" class="form-control" required>
@@ -21,7 +21,7 @@
                 <button class="btn btn-primary">Tampilkan</button>
             </div>
         </div>
-    </form>
+    </form> --}}
     @php
         $grouped = collect($data)->groupBy('siswa_id');
     @endphp

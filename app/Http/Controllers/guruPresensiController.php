@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\mataPelajaran;
 use App\Models\Siswa;
+use App\Models\guru;
 use App\Models\Absensi;
 use App\Models\OrangTua;
 use App\Models\tahunAjaran;
+use App\Models\guruMatkulKelas;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class guruPresensiController extends Controller
 {
@@ -25,33 +28,39 @@ class guruPresensiController extends Controller
             $error = null;
         }
 
+        $guru = guru::where('user_id', Auth::id())->first();
+        $data = guruMatkulKelas::with('guru', 'mapel')->where('guru_id', $guru->id)->get();
 
-        $kelas = Kelas::all();
-        $mapel = mataPelajaran::all();
-        $siswa = collect();
-        $absensiTersimpan = collect();
+        $kelas_id;
+        $mapel_id;
 
-        $tanggal = $request->tanggal ?? now()->toDateString();
+        foreach ($data as $key => $value) {
+            $kelas_id = $value->kelas_id;
+            $mapel_id = $value->mapel_id;
+        }
 
-            $siswa = Siswa::where('kelas_id', $request->kelas_id)->get();
+        $siswa = Siswa::all();
 
-            $absensiTersimpan = Absensi::where('kelas_id', $request->kelas_id)
-                ->where('mapel_id', $request->mapel_id)
-                ->where('tanggal', $tanggal)
-                ->get()
-                ->keyBy('siswa_id');
-
-
-        $siswa = Siswa::where('kelas_id', $request->kelas_id)->get();
-
-        return view('guru.presensi.index', compact('kelas', 'mapel', 'siswa', 'absensiTersimpan', 'tahun', 'error'));
+        return view('guru.presensi.index', compact('siswa', 'tahun', 'error', 'data', 'kelas_id', 'mapel_id'));
     }
 
 
     public function riwayatPresensi(Request $request)
     {
-        $kelas = Kelas::all();
-        $selectedKelas = $request->kelas_id;
+        // $kelas = Kelas::all();
+
+        $guru = guru::where('user_id', Auth::id())->first();
+        $data = guruMatkulKelas::with('guru', 'mapel')->where('guru_id', $guru->id)->get();
+
+        $kelas_id;
+        $mapel_id;
+
+        foreach ($data as $key => $value) {
+            $kelas_id = $value->kelas_id;
+            $mapel_id = $value->mapel_id;
+        }
+
+        $selectedKelas = $kelas_id;
         $tanggal = $request->tanggal ?? now()->toDateString();
         $data = [];
 
@@ -68,7 +77,7 @@ class guruPresensiController extends Controller
 
 
 
-        return view('guru.presensi.riwayatPresensi', compact('kelas', 'selectedKelas', 'tanggal', 'data'));
+        return view('guru.presensi.riwayatPresensi', compact('selectedKelas', 'tanggal', 'data'));
     }
 
     public function Laporan(Request $request)
@@ -118,7 +127,6 @@ class guruPresensiController extends Controller
 
 
         $request->validate([
-            'tanggal' => 'required|date',
             'kelas_id' => 'required',
             'mapel_id' => 'required',
             'absensi' => 'required|array',

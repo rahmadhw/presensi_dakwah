@@ -32,6 +32,17 @@ class adminController extends Controller
         // $chart->labels($labels);
         // $chart->dataset('Total Absensi per Siswa', 'bar', $totals)
         //     ->backgroundColor('#4ade80');
-        return view('admin.dashboard');
+
+
+        // Ambil total absensi per status
+    $absensiStats = Absensi::select('status', \DB::raw('count(*) as total'))
+        ->groupBy('status')
+        ->get();
+
+    // Siapkan data untuk chart
+    $labels = $absensiStats->pluck('status');
+    $data = $absensiStats->pluck('total');
+
+        return view('admin.dashboard', compact('labels', 'data'));
     }
 }
