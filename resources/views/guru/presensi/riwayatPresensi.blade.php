@@ -14,17 +14,20 @@
                     <tr>
                         <th>Nama Siswa</th>
                         <th>Status Kehadiran</th>
+                        <th>Nama Guru</th>
                         <th>Catatan</th>
                     </tr>
                 </thead>
                 <tbody>
                      @foreach($grouped as $siswa_id => $absensiList)
                 @foreach($absensiList as $index => $absen)
+                {{-- @dd($absen) --}}
                     <tr>
                         @if ($index == 0)
                             <td rowspan="{{ $absensiList->count() }}">{{ $absen->siswa->nama }}</td>
                         @endif
                         <td>{{ ucfirst($absen->status) }} - {{ $absen->mapel->nama_mapel }}</td>
+                    <td>{{ Auth::user()->name }}</td>
                     <td>{{ $absen->catatan ?? '-' }}</td>
                 </tr>
             @endforeach

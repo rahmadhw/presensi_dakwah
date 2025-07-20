@@ -196,9 +196,11 @@ Route::middleware(['auth', 'role:guru'])->prefix('guru')->name('guru.')->group(f
 
     Route::controller(guruPresensiController::class)->prefix('presensi')->name('presensi.')->group(function() {
         Route::get('/', 'index')->name('index');
+        Route::get('/jadwal-pengajaran', 'jadwalPengajaran')->name('jadwalPengajaran');
         Route::get('/riwayat-presensi', 'riwayatPresensi')->name('riwayatPresensi');
         Route::get('/laporan', 'laporan')->name('Laporan');
         Route::post('/store', 'store')->name('store');
+
     });
 });
 

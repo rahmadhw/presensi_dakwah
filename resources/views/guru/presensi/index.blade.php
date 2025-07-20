@@ -3,18 +3,18 @@
 @section('content')
     <div class="container">
     <h4>Form Kehadiran Siswa</h4>
-    <div class="row">
+    {{-- <div class="row">
         <div class="col">
             <table class="table table-bordered">
                 @foreach ($data as $item)
                     <tr>
-                        <th width="15%">Nama Guru</th>
-                        <td>{{ $item->guru->name }}</td>
+                        <th width="15%">Mata Pelajaran</th>
+                        <td>{{ $item->mapel->nama_mapel }}</td>
                     </tr>
                 @endforeach
             </table>
         </div>
-    </div>
+    </div> --}}
     @if(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
@@ -44,6 +44,9 @@
             </thead>
             <tbody>
                 @foreach($siswa as $s)
+                    {{-- @foreach ($data->where('kelas_id', $s->kelas_id) as $item) --}}
+                        
+                   
                 @php
                     $absen = $absensiTersimpan[$s->id] ?? null;
                 @endphp
@@ -69,6 +72,7 @@
                                 {{ $absen && $absen->status === 'izin' ? '' : 'disabled' }}>
                         </td>
                     </tr>
+                     {{-- @endforeach --}}
                 @endforeach
             </tbody>
         </table>
