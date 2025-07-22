@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\guru;
 use Illuminate\Http\Request;
 use App\Models\Kelas;
 use App\Models\mataPelajaran;
@@ -14,12 +13,10 @@ class kelasController extends Controller
     public function index() 
     {
         $data = Kelas::all();
-        $guru = guru::all();
         $tahunAjaran = tahunAjaran::all();
         return view('admin.kelas.index', 
         [
             "kelas" => $data,
-            "guru" => $guru,
             'tahunAjaran' => $tahunAjaran
         ]
         );
@@ -28,25 +25,19 @@ class kelasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kelas' => 'required'
+            'nama_kelas' => 'required',
+            'tahun_ajaran_id' => 'required'
         ]);
 
 
         $data = [
-            "nama_kelas" => $request->nama_kelas
+            "nama_kelas" => $request->nama_kelas,
+            "tahun_ajaran_id" => $request->tahun_ajaran_id,
         ];
 
 
         $kelas = Kelas::create($data);
 
-        $kelas_id = $kelas->id;
-
-        subKelas::create([
-            "nama" => $request->nama,
-            "kelas_id" => $kelas_id,
-            "guru_id" => $request->guru_id,
-            "tahun_ajaran_id" => $request->tahun_ajaran_id
-        ]);
 
         return redirect()->route('admin.kelas.index')->with('success', 'Data Kelas berhasil ditambahkan!');
     }
@@ -66,12 +57,12 @@ class kelasController extends Controller
     public function update(kelas $kelas, Request $request)
     {
         $request->validate([
-            'nama_kelas' => 'required'
+            'nama_kelas' => 'required',
         ]);
 
 
         $data = [
-            "nama_kelas" => $request->nama_kelas
+            "nama_kelas" => $request->nama_kelas,
         ];
 
 

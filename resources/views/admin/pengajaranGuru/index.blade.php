@@ -71,6 +71,14 @@
         <form action="{{route('admin.pengajaranGuru.store')}}" method="POST">
             @csrf
             <div class="form-group">
+                <label for="guru_id">Nama Guru</label>
+                <select name="guru_id" id="guru_id" class="form-control">
+                    @foreach ($users as $item)
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
                 <label>Nama Kelas</label>
                 <select name="kelas_id" id="kelas_id" class="form-control">
                     <option value="">=== Pilih Option ===</option>
@@ -90,7 +98,7 @@
                 </select>
             </div>
 
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="guru_id">Nama Guru</label>
                 <select name="guru_id" id="guru_id" class="form-control">
                     <option value="">=== Pilih Guru</option>
@@ -98,7 +106,7 @@
                         <option value="{{ $item->id }}">{{ $item->name }}</option>
                     @endforeach
                 </select>
-            </div>
+            </div> --}}
 
             <div class="form-group">
                 <label for="tahun_ajaran_id">Tahun Ajaran</label>

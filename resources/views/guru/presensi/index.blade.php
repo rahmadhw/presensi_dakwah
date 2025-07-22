@@ -1,20 +1,18 @@
 @extends('layout.app')
 
 @section('content')
+
+@php
+    $now = \Carbon\Carbon::now()->format('H:i');
+@endphp
+
+@if ($errors)
+    <h5>tidak bisa absensi</h5>
+@endif
+
+@if($jadwalSekarang && $jadwalSekarang->jam_mulai <= $now && $jadwalSekarang->jam_selesai >= $now)
     <div class="container">
     <h4>Form Kehadiran Siswa</h4>
-    {{-- <div class="row">
-        <div class="col">
-            <table class="table table-bordered">
-                @foreach ($data as $item)
-                    <tr>
-                        <th width="15%">Mata Pelajaran</th>
-                        <td>{{ $item->mapel->nama_mapel }}</td>
-                    </tr>
-                @endforeach
-            </table>
-        </div>
-    </div> --}}
     @if(session('error'))
         <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
@@ -81,6 +79,11 @@
         
 
 </div>
+@else
+    {{-- <div class="alert alert-warning">Form absensi hanya bisa diakses pada jam pelajaran ({{ $jadwalSekarang->jam_mulai }} - {{ $jadwalSekarang->jam_selesai }}).</div> --}}
+    
+@endif
+    
 @endsection
 
 

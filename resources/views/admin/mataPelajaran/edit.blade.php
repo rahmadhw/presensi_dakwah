@@ -19,6 +19,11 @@
                 			<input type="text" name="nama_mapel" class="form-control" value="{{ $mataPelajaran->nama_mapel }}">
                 		</div>
 
+						<div class="form-group">
+                			<label>Kode Mata Pelajaran</label>
+                			<input type="text" name="kode_mapel" class="form-control" value="{{ $mataPelajaran->kode_mapel }}">
+                		</div>
+
                 		<div class="form-group">
                 			<button type="submit" class="btn btn-primary">Simpan</button>
                 			<a href="{{ url('admin/mata-pelajaran') }}" class="btn btn-dark">Kembali</a>

@@ -9,7 +9,7 @@ class Absensi extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['siswa_id', 'kelas_id', 'mapel_id', 'tanggal', 'status', 'catatan'];
+    protected $fillable = ['siswa_id','guru_id', 'kelas_id', 'mapel_id', 'tanggal', 'status', 'catatan'];
 
 
     public function siswa()
@@ -20,5 +20,10 @@ class Absensi extends Model
     public function mapel()
     {
         return $this->belongsTo(mataPelajaran::class, 'mapel_id');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
     }
 }

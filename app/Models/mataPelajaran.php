@@ -9,5 +9,5 @@ class mataPelajaran extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama_mapel'];
+    protected $fillable = ['nama_mapel', 'kode_mapel'];
 }

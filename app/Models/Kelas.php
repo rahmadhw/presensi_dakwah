@@ -9,10 +9,10 @@ class Kelas extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama_kelas'];
+    protected $fillable = ['nama_kelas', 'tahun_ajaran_id'];
 
-    public function siswa()
-    {
-        return $this->hasMany(Siswa::class);
-    }
+    public function mapelGuru()
+	{
+	    return $this->hasMany(GuruMatkulKelas::class);
+	}
 }

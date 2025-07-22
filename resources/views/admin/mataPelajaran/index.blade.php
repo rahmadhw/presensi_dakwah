@@ -23,6 +23,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama Mata Pelajaran</th>
+                                <th>Kode Mata Pelajaran</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -32,6 +33,7 @@
                             <tr>
                                 <td>{{$k+1}}</td>
                                 <td>{{$value->nama_mapel}}</td>
+                                <td>{{$value->kode_mapel}}</td>
                                 <td>
                                         <a href="{{ url('admin/mata-pelajaran/hapus') }}/<?php echo $value->id ?>" class="btn btn-danger btn-sm hapus" id="hapus">Hapus</a>
                                         <a href="{{ url('admin/mata-pelajaran/edit') }}/<?php echo $value->id ?>" class="btn btn-success btn-sm">Edit</a>
@@ -65,6 +67,11 @@
             <div class="form-group">
                 <label>Nama Mata Pelajaran</label>
                 <input type="text" name="nama_mapel" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Kode Mata Pelajaran</label>
+                <input type="text" name="kode_mapel" class="form-control">
             </div>
 
             <div class="form-group">

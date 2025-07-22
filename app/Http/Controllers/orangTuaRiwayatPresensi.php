@@ -15,11 +15,11 @@ class orangTuaRiwayatPresensi extends Controller
 {
     public function index(Request $request)
     {
-
-        $orangTua  = OrangTua::where('user_id', Auth::user()->id)->first();
+        $id = Auth::user()->id;
+        $orangTua  = OrangTua::where('user_id', )->first();
        $data = Absensi::with('siswa')
-            ->whereHas('siswa', function ($query) use ($orangTua) {
-                $query->where('orang_tua_id', $orangTua->id);
+            ->whereHas('siswa', function ($query) use ($id) {
+                $query->where('orang_tua_id', $id);
             })
             ->get();
 

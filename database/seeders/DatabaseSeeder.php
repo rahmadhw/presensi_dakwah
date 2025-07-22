@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use App\Models\Kelas;
 use App\Models\subKelas;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -51,22 +52,38 @@ class DatabaseSeeder extends Seeder
         $orangTua->assignRole($role_orang_tua);
         $guru->assignRole($role_guru);
 
-        $data = [
-
-            ['nama_kelas' => '7A'],
-            ['nama_kelas' => '7B'],
-            ['nama_kelas' => '7C'],
-            ['nama_kelas' => '8A'],
-            ['nama_kelas' => '8B'],
-            ['nama_kelas' => '8C'],
-            ['nama_kelas' => '9A'],
-            ['nama_kelas' => '9B'],
-            ['nama_kelas' => '9C']
-
-        ];
+        
 
 
-        Kelas::insert($data);
+
+        DB::table('tahun_ajarans')->insert([
+            ['id' => 1, 'tahun_ajaran' => '2024/2025', 'status' => 'aktif'],
+        ]);
+
+        DB::table('kelas')->insert([
+            ['id' => 1, 'nama_kelas' => 'VII A', 'tahun_ajaran_id' => 1],
+        ]);
+
+
+        DB::table('mata_pelajarans')->insert([
+            ['id' => 1, 'nama_mapel' => 'Matematika', 'kode_mapel' => 'MTK'],
+        ]);
+
+
+        DB::table('siswas')->insert([
+            ['id' => 1, 'nama' => 'Siswa 1', 'nis' => '220001', 'kelas_id' => 1, 'orang_tua_id' => 2],
+            ['id' => 2, 'nama' => 'Siswa 2', 'nis' => '220002', 'kelas_id' => 1, 'orang_tua_id' => 2],
+        ]);
+
+        DB::table('guru_matkul_kelas')->insert([
+            ['id' => 1, 'guru_id' => 3, 'kelas_id' => 1, 'mapel_id' => 1, 'tahun_ajaran_id' => 1],
+        ]);
+
+
+        DB::table('absensis')->insert([
+            ['siswa_id' => 1, 'guru_id' => 3, 'mapel_id' => 1, 'kelas_id' => 1, 'tanggal' => now(), 'status' => 'hadir'],
+            ['siswa_id' => 2, 'guru_id' => 3, 'mapel_id' => 1, 'kelas_id' => 1, 'tanggal' => now(), 'status' => 'izin'],
+        ]);
         
         
     }

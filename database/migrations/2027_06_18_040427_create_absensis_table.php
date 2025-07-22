@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('absensis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('siswa_id')->references('id')->on('siswas');
+            $table->foreignId('guru_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('kelas_id')->references('id')->on('kelas');
             $table->foreignId('mapel_id')->references('id')->on('mata_pelajarans');
             $table->dateTime('tanggal');

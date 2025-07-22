@@ -17,12 +17,14 @@ class mataPelajaranController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_mapel' => 'required'
+            'nama_mapel' => 'required',
+            'kode_mapel' => 'required'
         ]);
 
 
         $data = [
-            "nama_mapel" => $request->nama_mapel
+            "nama_mapel" => $request->nama_mapel,
+            'kode_mapel' => $request->kode_mapel
         ];
 
 
@@ -40,12 +42,14 @@ class mataPelajaranController extends Controller
     public function update(mataPelajaran $mataPelajaran, Request $request)
     {
         $request->validate([
-            'nama_mapel' => 'required'
+            'nama_mapel' => 'required',
+            'kode_mapel' => 'required'
         ]);
 
 
         $data = [
-            "nama_mapel" => $request->nama_mapel
+            "nama_mapel" => $request->nama_mapel,
+            'kode_mapel' => $request->kode_mapel
         ];
 
 

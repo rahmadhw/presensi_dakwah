@@ -29,81 +29,74 @@ class guruPresensiController extends Controller
             $error = null;
         }
 
-        $guru = guru::where('user_id', Auth::id())->first();
-        $data = guruMatkulKelas::with('guru', 'mapel')->where('guru_id', $guru->id)->get();
+        $data = guruMatkulKelas::with('kelas')->where('guru_id', Auth::user()->id)->get();
 
-        $kelas_id;
-        $mapel_id;
 
         foreach ($data as $key => $value) {
             $kelas_id = $value->kelas_id;
             $mapel_id = $value->mapel_id;
         }
 
-        $siswa = Siswa::where('kelas_id', $kelas_id)->get();
+        $guruId = Auth::user()->id;
+        $kelasId = $kelas_id; // misalnya dari routing
+       $now = Carbon::now(); // waktu sekarang
+        $hariIni = strtolower($now->translatedFormat('l')); // "senin", "selasa", dst
+        $jamSekarang = $now->format('H:i:s');
+       
 
-        return view('guru.presensi.index', compact('siswa', 'tahun', 'error', 'data', 'kelas_id', 'mapel_id'));
+        $jadwalSekarang = guruMatkulKelas::where('guru_id', $guruId)
+            ->where('kelas_id', $kelasId)
+            ->where('hari', $hariIni)
+            ->where('jam_mulai', '<=', $jamSekarang)
+            ->where('jam_selesai', '>=', $jamSekarang)
+            ->first();
+
+        if (!$jadwalSekarang) {
+             $errors = "Mohon maaf tidak ada yang diabsen.";
+        }
+
+        // dd($jadwalSekarang);
+
+        $siswa = Siswa::whereHas('kelas', function ($query) use ($guruId) {
+            $query->whereHas('mapelGuru', function ($subQuery) use ($guruId) {
+                $subQuery->where('guru_id', $guruId);
+            });
+        })->get();
+
+        return view('guru.presensi.index', compact('siswa', 'tahun', 'error', 'kelas_id', 'mapel_id', 'jadwalSekarang', 'errors'));
     }
 
     public function jadwalPengajaran()
     {
+        $guruId = Auth::user()->id;
         $data = DB::table('guru_matkul_kelas as f')
-                    ->select(
-                        'f.*',
-                        'f.kelas_id as a',
-                        'f.mapel_id as c',
-                        'f.guru_id as d',
-                        'f.tahun_ajaran_id as e',
-                        'k.nama_kelas as nama_kelas',
-                        'mp.nama_mapel as nama_mapel',
-                        'g.name as nama_guru',
-                        'ta.tahun_ajaran as tahun_ajaran',
-                    )
-                    ->join('kelas as k', 'f.kelas_id', '=', 'k.id')
-                    ->join('mata_pelajarans as mp', 'f.mapel_id', '=', 'mp.id')
-                    ->join('gurus as g', 'f.guru_id', '=', 'g.id')
-                    ->join('tahun_ajarans as ta', 'f.tahun_ajaran_id', '=', 'ta.id')
-                    ->where('g.user_id', '=', Auth::user()->id)
-                    ->get();
+            ->select(
+                'f.*',
+                'f.kelas_id as a',
+                'f.mapel_id as c',
+                'f.tahun_ajaran_id as e',
+                'k.nama_kelas as nama_kelas',
+                'mp.nama_mapel as nama_mapel',
+                'ta.tahun_ajaran as tahun_ajaran',
+                'ga.name as nama_guru',
+            )
+            ->where('f.guru_id', '=', $guruId)
+            ->join('kelas as k', 'f.kelas_id', '=', 'k.id')
+            ->join('mata_pelajarans as mp', 'f.mapel_id', '=', 'mp.id')
+            ->join('tahun_ajarans as ta', 'f.tahun_ajaran_id', '=', 'ta.id')
+            ->join('users as ga', 'f.guru_id', '=', 'ga.id')
+
+            ->get();
         return view('guru.presensi.jadwalPengajaran', ["data" => $data]);
     }
 
 
     public function riwayatPresensi(Request $request)
     {
-        // $kelas = Kelas::all();
-
-        $guru = guru::where('user_id', Auth::id())->first();
-        $data = guruMatkulKelas::with('guru', 'mapel')->where('guru_id', $guru->id)->get();
-
-        $kelas_id;
-        $mapel_id;
-        $guru_id;
-
-        foreach ($data as $key => $value) {
-            $kelas_id = $value->kelas_id;
-            $mapel_id = $value->mapel_id;
-            $guru_id = $value->guru_id;
-        }
-
-        $selectedKelas = $kelas_id;
-        $tanggal = $request->tanggal ?? now()->toDateString();
-        $data = [];
-
-        if ($selectedKelas) {
-            $data = Absensi::with(['siswa', 'mapel'])
-                ->where('kelas_id', $selectedKelas)
-                ->where('tanggal', $tanggal)
-                ->orderBy('siswa_id')
-                ->orderBy('mapel_id')
-                ->get();
-        }
-
-        $data = collect($data);
-
-
-
-        return view('guru.presensi.riwayatPresensi', compact('selectedKelas', 'tanggal', 'data', 'guru_id'));
+       
+         $guruId = Auth::user()->id;
+        $data = Absensi::with('kelas', 'mapel', 'siswa')->where('guru_id', $guruId)->get();
+        return view('guru.presensi.riwayatPresensi', compact('data'));
     }
 
     public function Laporan(Request $request)
@@ -164,11 +157,12 @@ class guruPresensiController extends Controller
             if ($status === 'izin' && empty($request->catatan[$siswa_id])) {
                 return redirect()->back()->withErrors(["catatan.$siswa_id" => 'Catatan wajib diisi untuk izin.'])->withInput();
             }
-
+            $guruId = Auth::user()->id;
             Absensi::updateOrCreate(
                 [
                     'tanggal' => $request->tanggal,
                     'siswa_id' => $siswa_id,
+                    'guru_id' => $guruId,
                     'mapel_id' => $request->mapel_id,
                 ],
                 [

@@ -35,7 +35,7 @@
                                 <td>
                                     <a href="{{ url('admin/kelas/hapus') }}/<?php echo $value->id ?>" class="btn btn-danger btn-sm hapus">Hapus</a>
                                     <a href="{{ url('admin/kelas/edit') }}/<?php echo $value->id ?>" class="btn btn-success btn-sm">Edit</a>
-                                    <a href="{{ url('admin/kelas/detail') }}/<?php echo $value->id ?>" class="btn btn-info btn-sm">Detail</a>
+                                    {{-- <a href="{{ url('admin/kelas/detail') }}/<?php echo $value->id ?>" class="btn btn-info btn-sm">Detail</a> --}}
                                 </td>
                             </tr>
 
@@ -67,21 +67,7 @@
                 <input type="text" name="nama_kelas" class="form-control">
             </div>
 
-            <div class="form-group">
-                <label for="">Nama Sub Kelas</label>
-                <input type="text" name="nama" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="">Guru</label>
-                <select name="guru_id" id="guru_id" class="form-control">
-                    <option value="">=== Pilih Option ===</option>
-                    @foreach ($guru as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-
+            
             <div class="form-group">
                 <label for="">Tahun Ajaran</label>
                 <select name="tahun_ajaran_id" id="tahun_ajaran_id" class="form-control">

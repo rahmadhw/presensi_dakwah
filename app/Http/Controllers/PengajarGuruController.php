@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\guru;
 use App\Models\guruMatkulKelas;
 use App\Models\Kelas;
 use App\Models\mataPelajaran;
 use App\Models\tahunAjaran;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -16,28 +16,27 @@ class PengajarGuruController extends Controller
     {
         $kelas = Kelas::all();
         $mataPelajaran = mataPelajaran::all();
-        $guru = guru::all();
         $tahunAjaran = tahunAjaran::all();
+        $users = User::role('guru')->get();
         $data = DB::table('guru_matkul_kelas as f')
                     ->select(
                         'f.*',
                         'f.kelas_id as a',
                         'f.mapel_id as c',
-                        'f.guru_id as d',
                         'f.tahun_ajaran_id as e',
                         'k.nama_kelas as nama_kelas',
                         'mp.nama_mapel as nama_mapel',
-                        'g.name as nama_guru',
                         'ta.tahun_ajaran as tahun_ajaran',
+                        'ga.name as nama_guru',
                     )
                     ->join('kelas as k', 'f.kelas_id', '=', 'k.id')
                     ->join('mata_pelajarans as mp', 'f.mapel_id', '=', 'mp.id')
-                    ->join('gurus as g', 'f.guru_id', '=', 'g.id')
                     ->join('tahun_ajarans as ta', 'f.tahun_ajaran_id', '=', 'ta.id')
+                    ->join('users as ga', 'f.guru_id', '=', 'ga.id')
                     ->get();
 
-        
-        return view('admin.pengajaranGuru.index', ["data" => $data, "kelas" => $kelas, "mataPelajaran" => $mataPelajaran, "guru" => $guru, "tahunAjaran" => $tahunAjaran]);
+        // dd($data);
+        return view('admin.pengajaranGuru.index', ["data" => $data, "kelas" => $kelas, "mataPelajaran" => $mataPelajaran, "tahunAjaran" => $tahunAjaran, "users" => $users]);
     }
 
 
@@ -73,10 +72,9 @@ class PengajarGuruController extends Controller
     {
         $kelas = Kelas::all();
         $mataPelajaran = mataPelajaran::all();
-        $guru = guru::all();
         $tahunAjaran = tahunAjaran::all();
         $guruMatkulKelas->load(['kelas', 'mapel', 'guru', 'tahunAjaran']);
-        return view('admin.pengajaranGuru.edit', ['data' => $guruMatkulKelas, "kelas" => $kelas, "mataPelajaran" => $mataPelajaran, "guru" => $guru, "tahunAjaran" => $tahunAjaran]);
+        return view('admin.pengajaranGuru.edit', ['data' => $guruMatkulKelas, "kelas" => $kelas, "mataPelajaran" => $mataPelajaran,  "tahunAjaran" => $tahunAjaran]);
     }
 
     public function update(guruMatkulKelas $guruMatkulKelas, Request $request)

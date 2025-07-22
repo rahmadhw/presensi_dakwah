@@ -22,4 +22,5 @@ class Siswa extends Model
     }
 
 
+
 }

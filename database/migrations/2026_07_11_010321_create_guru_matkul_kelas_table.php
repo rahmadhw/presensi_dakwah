@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('kelas_id')->references('id')->on('kelas')->onDelete('cascade');
             $table->foreignId('mapel_id')->references('id')->on('mata_pelajarans')->onDelete('cascade');
-            $table->foreignId('guru_id')->references('id')->on('gurus')->onDelete('cascade');
+            $table->foreignId('guru_id')->references('id')->on('users')->onDelete('cascade');
              $table->foreignId('tahun_ajaran_id')->references('id')->on('tahun_ajarans')->onDelete('cascade');
              $table->string('hari')->nullable();
              $table->time('jam_mulai')->nullable();
