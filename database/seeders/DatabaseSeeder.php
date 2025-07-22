@@ -45,7 +45,12 @@ class DatabaseSeeder extends Seeder
         $guru = User::create([
             'name' => 'guru 1',
             'email' => 'guru1@dakwah.com',
-            'password' => Hash::make('1234')
+            'password' => Hash::make('1234'),
+            'nip' => '1111111',
+            'nomor_telepon' => '0899874863',
+            'jenis_kelamin' => 'laki-laki',
+            'tempat_lahir' => 'jakarta',
+            'tanggal_lahir' => '2000-02-24'
         ]);
 
         $admin->assignRole($roleAdmin);

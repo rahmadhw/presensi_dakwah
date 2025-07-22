@@ -27,7 +27,12 @@ class createGuruController extends Controller
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'password' => hash::make($request->password)
+            'password' => hash::make($request->password),
+            'nip' => $request->nip,
+            'nomor_telepon' => $request->nomor_telepon,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
         ];
 
         $dataGuru = User::create($data);

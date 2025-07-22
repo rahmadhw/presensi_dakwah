@@ -14,7 +14,7 @@
                 </tr>
             </thead>
             <tbody>
-            	@foreach ($data as $k => $value)
+            			@foreach ($data as $k => $value)
 
             	<tr>
             		<td>{{ $k+1 }}</td>
