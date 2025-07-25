@@ -35,7 +35,7 @@ use Illuminate\Support\Facades\Http;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('login');
 });
 
 
@@ -135,6 +135,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::get('/', 'index')->name('index');
         Route::get('/get-data-siswa', 'get-data-siswa')->name('getDataSiswa');
         Route::post('/import', 'import')->name('import');
+        Route::post('/store', 'store')->name('store');
         Route::get('/edit/{siswa}', 'edit')->name('edit');
         Route::post('/update/{siswa}', 'update')->name('update');
         Route::get('/hapus/{siswa}', 'hapus')->name('hapus');
@@ -200,6 +201,8 @@ Route::middleware(['auth', 'role:guru'])->prefix('guru')->name('guru.')->group(f
         Route::get('/riwayat-presensi', 'riwayatPresensi')->name('riwayatPresensi');
         Route::get('/laporan', 'laporan')->name('Laporan');
         Route::post('/store', 'store')->name('store');
+        Route::get('/kelas', 'kelas')->name('kelas');
+        Route::post('/kelasStore', 'kelasStore')->name('kelasStore');
 
     });
 });

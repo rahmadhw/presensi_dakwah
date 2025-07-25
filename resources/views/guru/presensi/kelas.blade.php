@@ -23,7 +23,7 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Kelas</th>
-                        <th>Action</th>
+                        {{-- <th>Action</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -32,11 +32,11 @@
                     <tr>
                         <td>{{$k+1}}</td>
                         <td>{{$value->nama_kelas}}</td>
-                        <td>
+                        {{-- <td>
                             <a href="{{ url('admin/kelas/hapus') }}/<?php echo $value->id ?>" class="btn btn-danger btn-sm hapus">Hapus</a>
                             <a href="{{ url('admin/kelas/edit') }}/<?php echo $value->id ?>" class="btn btn-success btn-sm">Edit</a>
-                            {{-- <a href="{{ url('admin/kelas/detail') }}/<?php echo $value->id ?>" class="btn btn-info btn-sm">Detail</a> --}}
-                        </td>
+                            <a href="{{ url('admin/kelas/detail') }}/<?php echo $value->id ?>" class="btn btn-info btn-sm">Detail</a>
+                        </td> --}}
                     </tr>
 
                     @endforeach
@@ -60,14 +60,14 @@
       </button>
   </div>
   <div class="modal-body">
-    <form action="{{route('admin.kelas.store')}}" method="POST">
+    <form action="{{route('guru.presensi.kelasStore')}}" method="POST">
         @csrf
         <div class="form-group">
             <label>Nama Kelas</label>
             <input type="text" name="nama_kelas" class="form-control">
         </div>
 
-        
+
         <div class="form-group">
             <label for="">Tahun Ajaran</label>
             <select name="tahun_ajaran_id" id="tahun_ajaran_id" class="form-control">
@@ -77,7 +77,7 @@
                 @endforeach
             </select>
         </div>
-        
+
         <div class="form-group mt-3">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Save changes</button>
@@ -85,7 +85,7 @@
     </form>
 </div>
 <div class="modal-footer">
-    
+
 </div>
 </div>
 </div>
@@ -102,8 +102,8 @@
 <script>
     $(document).ready(function () {
 
-        
-        
+
+
 
         $(".hapus").click(function (e) {
             e.preventDefault();

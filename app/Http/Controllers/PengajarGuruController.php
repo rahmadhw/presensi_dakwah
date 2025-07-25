@@ -19,21 +19,21 @@ class PengajarGuruController extends Controller
         $tahunAjaran = tahunAjaran::all();
         $users = User::role('guru')->get();
         $data = DB::table('guru_matkul_kelas as f')
-                    ->select(
-                        'f.*',
-                        'f.kelas_id as a',
-                        'f.mapel_id as c',
-                        'f.tahun_ajaran_id as e',
-                        'k.nama_kelas as nama_kelas',
-                        'mp.nama_mapel as nama_mapel',
-                        'ta.tahun_ajaran as tahun_ajaran',
-                        'ga.name as nama_guru',
-                    )
-                    ->join('kelas as k', 'f.kelas_id', '=', 'k.id')
-                    ->join('mata_pelajarans as mp', 'f.mapel_id', '=', 'mp.id')
-                    ->join('tahun_ajarans as ta', 'f.tahun_ajaran_id', '=', 'ta.id')
-                    ->join('users as ga', 'f.guru_id', '=', 'ga.id')
-                    ->get();
+        ->select(
+            'f.*',
+            'f.kelas_id as a',
+            'f.mapel_id as c',
+            'f.tahun_ajaran_id as e',
+            'k.nama_kelas as nama_kelas',
+            'mp.nama_mapel as nama_mapel',
+            'ta.tahun_ajaran as tahun_ajaran',
+            'ga.name as nama_guru',
+        )
+        ->join('kelas as k', 'f.kelas_id', '=', 'k.id')
+        ->join('mata_pelajarans as mp', 'f.mapel_id', '=', 'mp.id')
+        ->join('tahun_ajarans as ta', 'f.tahun_ajaran_id', '=', 'ta.id')
+        ->join('users as ga', 'f.guru_id', '=', 'ga.id')
+        ->get();
 
         // dd($data);
         return view('admin.pengajaranGuru.index', ["data" => $data, "kelas" => $kelas, "mataPelajaran" => $mataPelajaran, "tahunAjaran" => $tahunAjaran, "users" => $users]);
@@ -65,7 +65,7 @@ class PengajarGuruController extends Controller
 
         guruMatkulKelas::create($data);
 
-         return redirect()->route('admin.pengajaranGuru.index')->with('success', 'Data Pengajaran ditambahkan!');
+        return redirect()->route('admin.pengajaranGuru.index')->with('success', 'Data Pengajaran ditambahkan!');
     }
 
     public function edit(guruMatkulKelas $guruMatkulKelas)
@@ -73,8 +73,9 @@ class PengajarGuruController extends Controller
         $kelas = Kelas::all();
         $mataPelajaran = mataPelajaran::all();
         $tahunAjaran = tahunAjaran::all();
+        $guru = User::role('guru')->get();
         $guruMatkulKelas->load(['kelas', 'mapel', 'guru', 'tahunAjaran']);
-        return view('admin.pengajaranGuru.edit', ['data' => $guruMatkulKelas, "kelas" => $kelas, "mataPelajaran" => $mataPelajaran,  "tahunAjaran" => $tahunAjaran]);
+        return view('admin.pengajaranGuru.edit', ['data' => $guruMatkulKelas, "kelas" => $kelas, "mataPelajaran" => $mataPelajaran,  "tahunAjaran" => $tahunAjaran, "guru" => $guru]);
     }
 
     public function update(guruMatkulKelas $guruMatkulKelas, Request $request)

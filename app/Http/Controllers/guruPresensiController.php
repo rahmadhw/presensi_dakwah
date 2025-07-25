@@ -220,4 +220,32 @@ public function store(Request $request)
 
     return redirect()->route('guru.presensi.index')->with('success', 'Absensi berhasil!');
 }
+
+
+public function kelas ()
+{
+    $data = Kelas::all();
+    $tahunAjaran = tahunAjaran::all();
+    return view('guru.presensi.kelas', ['kelas' => $data, 'tahunAjaran' => $tahunAjaran]);
+}
+
+public function kelasStore(Request $request)
+{
+    $request->validate([
+        'nama_kelas' => 'required',
+        'tahun_ajaran_id' => 'required'
+    ]);
+
+
+    $data = [
+        "nama_kelas" => $request->nama_kelas,
+        "tahun_ajaran_id" => $request->tahun_ajaran_id,
+    ];
+
+
+    $kelas = Kelas::create($data);
+
+
+    return redirect()->route('guru.presensi.kelas')->with('success', 'Data Kelas berhasil ditambahkan!');
+}
 }

@@ -16,20 +16,20 @@ class guruMatkulKelas extends Model
     //     return $this->belongsTo(Kelas::class);
     // }
 
-    // public function mapel()
-    // {
-    //     return $this->belongsTo(mataPelajaran::class, 'mapel_id');
-    // }
+    public function mapel()
+    {
+        return $this->belongsTo(mataPelajaran::class, 'mapel_id');
+    }
 
-    // public function guru()
-    // {
-    //     return $this->belongsTo(guru::class);
-    // }
+    public function guru()
+    {
+        return $this->belongsTo(User::class, 'id');
+    }
 
-    // public function tahunAjaran()
-    // {
-    //     return $this->belongsTo(tahunAjaran::class);
-    // }
+    public function tahunAjaran()
+    {
+        return $this->belongsTo(tahunAjaran::class);
+    }
 
 
     // public function guruMatkulKelas()
